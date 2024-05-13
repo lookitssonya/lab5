@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+template<typename T>
+class Complex {
+private:
+    T real; // Вещественная часть комплексного числа
+    T imaginary; // Мнимая часть комплексного числа
+
+public:
+    // Конструктор, чтобы инициализировать вещественную и мнимую части
+    Complex(T real, T imaginary) : real(real), imaginary(imaginary) {}
+
+    // Метод для сложения комплексных чисел
+    Complex<T> operator+(const Complex<T>& other) const {
+        return Complex<T>(real + other.real, imaginary + other.imaginary);
+    }
+
+    // Метод для вычитания комплексных чисел
+    Complex<T> operator-(const Complex<T>& other) const {
+        return Complex<T>(real - other.real, imaginary - other.imaginary);
+    }
+
+    // Метод для умножения комплексных чисел
+    Complex<T> operator*(const Complex<T>& other) const {
+        T result_real = real * other.real - imaginary * other.imaginary;
+        T result_imaginary = real * other.imaginary + imaginary * other.real;
+        return Complex<T>(result_real, result_imaginary);
+    }
+
+    // Метод для вывода комплексного числа
+    void print() const {
+        cout << real << " + " << imaginary << "i" << endl;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    double real1, imaginary1, real2, imaginary2;
+    cout << "Введите вещественную часть первого комплексного числа: ";
+    cin >> real1;
+    cout << "Введите мнимую часть первого комплексного числа: ";
+    cin >> imaginary1;
+    cout << "Введите вещественную часть второго комплексного числа: ";
+    cin >> real2;
+    cout << "Введите мнимую часть второго комплексного числа: ";
+    cin >> imaginary2;
+
+    // Пример использования шаблонного класса Complex
+    Complex<double> complex1(real1, imaginary1);
+    Complex<double> complex2(real2, imaginary2);
+
+    Complex<double> sum = complex1 + complex2;
+    cout << "Результат сложения: ";
+    sum.print();
+
+    Complex<double> diff = complex1 - complex2;
+    cout << "Результат вычитания: ";
+    diff.print();
+
+    Complex<double> product = complex1 * complex2;
+    cout << "Результат умножения: ";
+    product.print();
+
+    return 0;
+}
