@@ -1,0 +1,82 @@
+#include <iostream>
+#include <list>
+#include <string>
+using namespace std;
+
+// Определяем шаблон класса Queue, который представляет очередь
+// T - тип элементов, Server - тип контейнера для реализации очереди
+template <class T, class Server = list<T>>
+class Queue {
+public:
+    // Добавление элемента в конец очереди
+    void enqueue(const T& value) {
+        server.push_back(value);
+    }
+    // Извлечение элемента из начала очереди
+    T dequeue() {
+        if (server.empty()) {
+            throw out_of_range("Очередь пуста!");
+        }
+        // Извлечение первого элемента из очереди
+        T front = server.front();
+        server.pop_front(); // Удаление извлеченного элемента
+        return front;
+    }
+
+private:
+    Server server;
+};
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    // Создание очередей для разных типов данных
+    Queue<int> intQueue;
+    Queue<double> doubleQueue;
+    Queue<string> stringQueue;
+
+    int choice;
+    do {
+        cout << "1. Добавить в очередь\n2. Исключить из очереди\n3. Выход\n";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: {
+            int intValue;
+            double doubleValue;
+            string stringValue;
+
+            cout << "Введите целое число: ";
+            cin >> intValue;
+            intQueue.enqueue(intValue);
+
+            cout << "Введите дробное число: ";
+            cin >> doubleValue;
+            doubleQueue.enqueue(doubleValue);
+
+            cout << "Введите строку: ";
+            cin.ignore(); 
+            getline(cin, stringValue);
+            stringQueue.enqueue(stringValue);
+            break;
+        }
+        case 2: {
+            try {
+                cout << "Целое число, исключенное из очереди: " << intQueue.dequeue() << endl;
+                cout << "Дробное число, исключенное из очереди: " << doubleQueue.dequeue() << endl;
+                cout << "Строка, исключенная из очереди: " << stringQueue.dequeue() << endl;
+            }
+            catch (const out_of_range& e) {
+                cerr << "Исключение: " << e.what() << endl;
+            }
+            break;
+        }
+        case 3:
+            cout << "Выход из программы\n";
+            break;
+        default:
+            cout << "Неверный выбор\n";
+        }
+    } while (choice != 3);
+
+    return 0;
+}
